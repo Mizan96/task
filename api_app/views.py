@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
-from api_app.serializers import UserSignUpSerializer
+from api_app.serializers import UserSignUpSerializer, UserSerializer
 from rest_framework import status
 
 from django.contrib.auth.hashers import make_password
 
 from rest_framework.response import Response
+
+from rest_framework import viewsets
 
 @api_view(['POST'])
 def registration(request):
@@ -24,5 +26,11 @@ def registration(request):
         except:
             message = {'detail': 'User with this email already exists'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+class UserAPI(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
     
